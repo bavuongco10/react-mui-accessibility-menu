@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as React from "react";
 import Menu, { menuClasses } from "@mui/joy/Menu";
 import MenuItem from "@mui/joy/MenuItem";
@@ -173,7 +174,7 @@ export default function MenuIconSideNavExample() {
         <ListItem>
           <MenuButton
             label="Apps"
-            open={menuIndex === 0}
+            open={true}
             onOpen={() => setMenuIndex(0)}
             onLeaveMenu={createHandleLeaveMenu(0)}
             menu={
