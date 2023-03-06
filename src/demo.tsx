@@ -23,9 +23,9 @@ const modifiers = [
           return [8, 20];
         }
         return [-8, 20];
-      }
-    }
-  }
+      },
+    },
+  },
 ];
 
 function MenuButton({
@@ -55,9 +55,10 @@ function MenuButton({
   };
 
   return (
-    <React.Fragment>
+    <>
       <IconButton
         {...props}
+        className={open ? "menu-item-is-active" : ""}
         ref={buttonRef}
         variant="plain"
         color="neutral"
@@ -83,11 +84,16 @@ function MenuButton({
         sx={{
           bgcolor: open ? "neutral.plainHoverBg" : undefined,
           "&.Joy-focusVisible": {
-            bgcolor: "neutral.plainHoverBg"
+            // bgcolor: "neutral.plainHoverBg"
           },
           display: "flex",
           flexDirection: "column",
-          fontSize: "10px"
+          position: "relative",
+          width: "100%",
+          padding: 0,
+          "& .MuiTypography-root": {
+            fontSize: "12px",
+          },
         }}
       >
         {children}
@@ -107,42 +113,51 @@ function MenuButton({
         slotProps: {
           listbox: {
             id: `nav-example-menu-${label}`,
-            "aria-label": label
-          }
+            "aria-label": label,
+          },
         },
         placement: "right-start",
         sx: {
+          boxShadow: "2px -1px 4px -2px #000",
           border: 0,
-          padding: 0,
+          padding: "50px 18px 30px 18px",
           width: 288,
           borderRadius: 0,
+          top: "0px !important",
           bottom: "0px !important",
           display: "block",
           background: "#354AB5",
           transform: "translate3d(130px, 0px, 0px) !important",
           [`& .${menuClasses.listbox}`]: {
-            "--List-padding": "var(--List-divider-gap)"
+            "--List-padding": "var(--List-divider-gap)",
           },
           "& .MuiMenuItem-root": {
-            color: "white"
-          }
-        }
+            color: "white",
+            fontSize: "12px",
+            fontWeight: "bold",
+            paddingLeft: 0,
+            paddingRight: 0,
+          },
+          "& .MuiMenuItem-root:hover": {
+            color: "#364BB5",
+            // color: "#cccaca",
+            // background: "transparent"
+          },
+          "& .MuiListDivider-root": {
+            background: "rgba(248,251,252,0.3)",
+          },
+        },
       })}
-    </React.Fragment>
+    </>
   );
 }
-
-const renderShortcut = (text) => (
-  <Typography level="body2" textColor="text.tertiary" ml="auto">
-    {text}
-  </Typography>
-);
 
 export default function MenuIconSideNavExample() {
   const [menuIndex, setMenuIndex] = React.useState(null);
   const itemProps = {
-    onClick: () => setMenuIndex(null)
+    onClick: () => setMenuIndex(null),
   };
+
   const createHandleLeaveMenu = (index) => (getIsOnButton) => {
     setTimeout(() => {
       const isOnButton = getIsOnButton();
@@ -165,49 +180,61 @@ export default function MenuIconSideNavExample() {
           display: "flex",
           height: "100vh",
           padding: 0,
+          alignItems: "center",
           "& .MuiListItem-root": {
+            width: "100%",
             justifyContent: "center",
-            background: "#364BB5"
-          }
+            padding: "10px 0",
+          },
+          "& .MuiIconButton-root": {
+            height: "60px",
+          },
+          "& .MuiIconButton-root.menu-item-is-active::before": {
+            content: `""`,
+            display: "inline-block",
+            position: "absolute",
+            height: "60px",
+            background: "#364BB5",
+            boxShadow: "-1px -1px 2px -1px #000",
+            borderRadius: "15px 0 0 15px",
+            width: "85%",
+            right: "0px",
+          },
+          "& .MuiIconButton-root.menu-item-is-active > *": {
+            color: "white",
+          },
+          "& .MuiIconButton-root > *": {
+            position: "relative",
+            color: "#364BB5",
+          },
         }}
       >
         <ListItem>
           <MenuButton
             label="Apps"
-            open={true}
+            open={menuIndex === 0}
             onOpen={() => setMenuIndex(0)}
             onLeaveMenu={createHandleLeaveMenu(0)}
             menu={
               <Menu onClose={() => setMenuIndex(null)}>
                 <ListItem nested>
                   <List aria-label="Time travel">
-                    <MenuItem {...itemProps}>
-                      Undo {renderShortcut("⌘ Z")}
-                    </MenuItem>
-                    <MenuItem {...itemProps}>
-                      Redo {renderShortcut("⇧ ⌘ Z")}
-                    </MenuItem>
-                  </List>
-                </ListItem>
-                <ListDivider />
-                <ListItem nested>
-                  <List aria-label="Tool">
-                    <MenuItem {...itemProps}>
-                      Cut {renderShortcut("⌘ X")}
-                    </MenuItem>
-                    <MenuItem {...itemProps}>
-                      Copy {renderShortcut("⌘ Z")}
-                    </MenuItem>
-                    <MenuItem {...itemProps}>
-                      Paste {renderShortcut("⌘ V")}
-                    </MenuItem>
+                    <MenuItem {...itemProps}>Undo</MenuItem>
+                    <ListDivider />
+                    <MenuItem {...itemProps}>Redo</MenuItem>
+                    <ListDivider />
+                    <MenuItem {...itemProps}>Cut</MenuItem>
+                    <ListDivider />
+                    <MenuItem {...itemProps}>Copy</MenuItem>
+                    <ListDivider />
+                    <MenuItem {...itemProps}>Paste</MenuItem>
                   </List>
                 </ListItem>
               </Menu>
             }
           >
             <Apps />
-            Apps
+            <Typography>Apps</Typography>
           </MenuButton>
         </ListItem>
         <ListItem>
@@ -218,14 +245,26 @@ export default function MenuIconSideNavExample() {
             onLeaveMenu={createHandleLeaveMenu(1)}
             menu={
               <Menu onClose={() => setMenuIndex(null)}>
-                <MenuItem {...itemProps}>Setting 1</MenuItem>
-                <MenuItem {...itemProps}>Setting 2</MenuItem>
-                <MenuItem {...itemProps}>Setting 3</MenuItem>
+                <ListItem nested>
+                  <di>hahaha</di>
+                  <List aria-label="Time travel">
+                    <MenuItem {...itemProps}>Undo</MenuItem>
+                    <MenuItem {...itemProps}>Redo</MenuItem>
+                  </List>
+                </ListItem>
+                <ListDivider />
+                <ListItem nested>
+                  <List aria-label="Tool">
+                    <MenuItem {...itemProps}>Cut</MenuItem>
+                    <MenuItem {...itemProps}>Copy</MenuItem>
+                    <MenuItem {...itemProps}>Paste</MenuItem>
+                  </List>
+                </ListItem>
               </Menu>
             }
           >
             <Settings />
-            Settings
+            <Typography>Settings</Typography>
           </MenuButton>
         </ListItem>
         <ListItem sx={{ marginTop: "auto" }}>
@@ -243,7 +282,7 @@ export default function MenuIconSideNavExample() {
             }
           >
             <Person />
-            Personal
+            <Typography>Personal</Typography>
           </MenuButton>
         </ListItem>
       </List>
