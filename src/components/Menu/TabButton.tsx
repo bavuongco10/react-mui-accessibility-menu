@@ -9,8 +9,19 @@ const COLORS = {
   mainBlue: "#364BB5",
 };
 
-const TabStyled = styled(TabUnstyled)((props) => {
-  const haveMenu = props["data-have-menu"];
+export interface TabButtonExtraProps {
+  icon?: React.ReactNode;
+  label?: string;
+  alt?: string;
+  tabIndex?: number;
+  value?: number;
+  "data-havemenu"?: boolean;
+}
+
+export type TabButtonProps = TabUnstyledProps & TabButtonExtraProps;
+
+const TabStyled = styled(TabUnstyled)((props: TabButtonProps) => {
+  const haveMenu = props["data-havemenu"];
   return `
   &.Mui-selected::before {
     content: "";
@@ -27,32 +38,14 @@ const TabStyled = styled(TabUnstyled)((props) => {
 `;
 });
 
-export interface TabButtonProps {
-  icon: React.ReactNode;
-  title: string;
-  value?: number;
-  tabIndex?: number;
-  onClose?: () => void;
-  setMenuIndex?: any;
-  open?: boolean;
-}
-
 const TabButton = forwardRef(
   (
-    {
-      icon,
-      title,
-      value,
-      tabIndex,
-      ...restProps
-    }: TabButtonProps & TabUnstyledProps,
+    { icon, alt, label, ...restProps }: TabButtonProps,
     ref: React.ForwardedRef<HTMLButtonElement>
   ) => {
     return (
       <TabStyled
         ref={ref}
-        value={value}
-        tabIndex={tabIndex}
         className="w-full h-16 relative text-mainBlue last-of-type:mt-auto aria-selected:text-white my-1"
         {...restProps}
       >
@@ -60,7 +53,7 @@ const TabButton = forwardRef(
           <Dashboard sx={{ fontSize: "30px" }} />
         </div>
         <Typography className="relative text-inherit text-xs capitalize font-bold font-sans">
-          {title}
+          {label}
         </Typography>
       </TabStyled>
     );

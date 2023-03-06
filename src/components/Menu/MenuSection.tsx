@@ -2,10 +2,17 @@ import * as React from "react";
 
 interface MenuSectionProps {
   children: React.ReactNode;
-  label: string;
+  label?: string;
+  labelProps?: {
+    className?: string;
+  };
 }
 
-const MenuSection = ({ children, label, labelProps }: MenuSectionProps) => {
+const MenuSection = ({
+  children,
+  labelProps,
+  label = "",
+}: MenuSectionProps) => {
   return (
     <li>
       <span
