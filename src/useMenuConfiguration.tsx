@@ -35,7 +35,7 @@ export interface PrimaryMenuItem extends MenuItem {
   title: string;
   relatedUrls?: string[];
 }
-interface MenuItems {
+export interface MenuItems {
   menuItems: PrimaryMenuItem[];
 }
 export default function useMenuConfiguration() {

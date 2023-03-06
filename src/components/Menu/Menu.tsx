@@ -1,18 +1,18 @@
+import { useState, SyntheticEvent } from "react";
 import TabsListUnstyled from "@mui/base/TabsListUnstyled";
-import { map, size } from "lodash";
-import Tab from "./Tab";
 import MenuUnstyled from "@mui/base/MenuUnstyled";
-import MenuSection from "./MenuSection";
 import MenuItemUnstyled from "@mui/base/MenuItemUnstyled";
 import TabsUnstyled from "@mui/base/TabsUnstyled";
-import { useState, SyntheticEvent } from "react";
-import useMenuConfiguration from "../../useMenuConfiguration";
+import { map, size } from "lodash";
+
+import Tab from "./Tab";
+import MenuSection from "./MenuSection";
+import { PrimaryMenuItem } from "../../useMenuConfiguration";
 
 export type menuIndex = number | false;
 
-const Menu = () => {
+const Menu = ({ items }: { items: Array<PrimaryMenuItem> }) => {
   const [menuIndex, setMenuIndex] = useState<menuIndex>(false);
-  const { menuItems } = useMenuConfiguration();
 
   const onCloseMenu = () => setMenuIndex(false);
 
@@ -36,7 +36,7 @@ const Menu = () => {
       onChange={onChangeTab}
     >
       <TabsListUnstyled className="flex flex-col h-full items-center">
-        {map(menuItems, (item, index) => {
+        {map(items, (item, index) => {
           const haveSubMenu1 = size(item.subMenu1) > 0;
           return (
             <Tab
@@ -46,7 +46,7 @@ const Menu = () => {
               label={item.title}
               onOpen={onOpenMenu}
               onClose={onCloseMenu}
-              value={index}
+              value={Number(index)}
               open={menuIndex === index}
               menu={
                 haveSubMenu1 && (
